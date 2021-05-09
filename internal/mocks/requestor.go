@@ -34,6 +34,21 @@ func (m *Mockrequestor) EXPECT() *MockrequestorMockRecorder {
 	return m.recorder
 }
 
+// GetItem mocks base method.
+func (m *Mockrequestor) GetItem(input *dynamodb.GetItemInput) (*dynamodb.GetItemOutput, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetItem", input)
+	ret0, _ := ret[0].(*dynamodb.GetItemOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetItem indicates an expected call of GetItem.
+func (mr *MockrequestorMockRecorder) GetItem(input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetItem", reflect.TypeOf((*Mockrequestor)(nil).GetItem), input)
+}
+
 // PutItem mocks base method.
 func (m *Mockrequestor) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {
 	m.ctrl.T.Helper()

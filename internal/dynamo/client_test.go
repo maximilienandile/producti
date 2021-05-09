@@ -68,5 +68,37 @@ func TestMarshallInput(t *testing.T) {
 	skRetrieved, found := marshalled[sk]
 	assert.True(t, found)
 	assert.Equal(t, skTest, *skRetrieved.S)
+}
 
+func TestGetByKeyFound(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	mockedDynamo := mocks.NewMockrequestor(ctrl)
+
+	testPk := productPk
+	testSK := "42"
+	tableName := "myTable"
+	testClient := client{
+		dynamoDB:  mockedDynamo,
+		tableName: tableName,
+	}
+	mockedDynamo.EXPECT().GetItem(&dynamodb.GetItemInput{
+		TableName: aws.String(tableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			pk: {
+				S: aws.String(string(testPk)),
+			},
+			sk: {
+				S: aws.String(testSK),
+			},
+		},
+	}).Return(&dynamodb.GetItemOutput{
+		Item: map[string]*dynamodb.AttributeValue{
+			pk: {S: aws.String(string(testPk))},
+			sk: {S: aws.String(testSK)},
+		},
+	}, nil)
+	out, err := testClient.getByKey(testPk, testSK)
+	assert.Nil(t, err)
+	assert.NotNil(t, out)
 }

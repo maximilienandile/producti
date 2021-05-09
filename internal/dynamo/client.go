@@ -3,6 +3,8 @@ package dynamo
 import (
 	"fmt"
 
+	"github.com/maximilienandile/producti/internal/storage"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -57,4 +59,25 @@ func (c client) marshallInput(req putRequest) (map[string]*dynamodb.AttributeVal
 	marshalled[pk] = &dynamodb.AttributeValue{S: aws.String(string(req.pk))}
 	marshalled[sk] = &dynamodb.AttributeValue{S: aws.String(req.sk)}
 	return marshalled, nil
+}
+
+func (c *client) getByKey(partitionKeyValue partitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
+	result, err := c.dynamoDB.GetItem(&dynamodb.GetItemInput{
+		TableName: aws.String(c.tableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			pk: {
+				S: aws.String(string(partitionKeyValue)),
+			},
+			sk: {
+				S: aws.String(sortKeyValue),
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(result.Item) == 0 {
+		return nil, storage.ErrNotFound
+	}
+	return result.Item, nil
 }
