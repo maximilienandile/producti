@@ -1,3 +1,4 @@
+# Todo : aws profile dynamic
 build:
 	env GOOS=linux go build -ldflags="-s -w" -o bin/api cmd/api/main.go
 	env GOOS=linux go build -ldflags="-s -w" -o bin/indexer cmd/indexer/main.go
