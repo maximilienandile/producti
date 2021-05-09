@@ -63,3 +63,17 @@ func (mr *MockrequestorMockRecorder) PutItem(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PutItem", reflect.TypeOf((*Mockrequestor)(nil).PutItem), input)
 }
+
+// QueryPages mocks base method.
+func (m *Mockrequestor) QueryPages(input *dynamodb.QueryInput, fn func(*dynamodb.QueryOutput, bool) bool) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryPages", input, fn)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// QueryPages indicates an expected call of QueryPages.
+func (mr *MockrequestorMockRecorder) QueryPages(input, fn interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryPages", reflect.TypeOf((*Mockrequestor)(nil).QueryPages), input, fn)
+}

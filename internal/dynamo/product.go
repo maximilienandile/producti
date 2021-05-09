@@ -42,6 +42,7 @@ func (p ProductStore) Create(product *product.Product) (*product.Product, error)
 	return product, nil
 }
 
+// Get a product by it's ID
 func (p ProductStore) GetByID(ID string) (*product.Product, error) {
 	out, err := p.client.getByKey(productPk, ID)
 	if err != nil {
@@ -52,6 +53,23 @@ func (p ProductStore) GetByID(ID string) (*product.Product, error) {
 
 func (p ProductStore) GetByName(name string) ([]*product.Product, error) {
 	panic("implement me")
+}
+
+// GetAll retrieve all the products stored
+func (p ProductStore) GetAll() ([]*product.Product, error) {
+	all, err := p.client.getAllByPK(productPk)
+	if err != nil {
+		return nil, fmt.Errorf("impossible to retrieve all products: %w", err)
+	}
+	allProducts := make([]*product.Product, 0, len(all))
+	for k, v := range all {
+		productUnmarshalled, err := p.unmarshallProduct(v)
+		if err != nil {
+			return nil, fmt.Errorf("impossible to unmarshall product at index %d: %w", k, err)
+		}
+		allProducts = append(allProducts, productUnmarshalled)
+	}
+	return allProducts, nil
 }
 
 // unmarshallProduct will take a result from dynamodb and unmarshall it into a variable of type *product.Product

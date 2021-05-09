@@ -3,6 +3,8 @@ package dynamo
 import (
 	"fmt"
 
+	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
+
 	"github.com/maximilienandile/producti/internal/storage"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -61,6 +63,7 @@ func (c client) marshallInput(req putRequest) (map[string]*dynamodb.AttributeVal
 	return marshalled, nil
 }
 
+// this method allow you to get an item in dynamo by PK and SK
 func (c *client) getByKey(partitionKeyValue partitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
 	result, err := c.dynamoDB.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(c.tableName),
@@ -80,4 +83,40 @@ func (c *client) getByKey(partitionKeyValue partitionKey, sortKeyValue string) (
 		return nil, storage.ErrNotFound
 	}
 	return result.Item, nil
+}
+
+func (c *client) queryInputGetByPK(pkValue partitionKey) (*dynamodb.QueryInput, error) {
+	keyCondition := expression.Key(pk).Equal(expression.Value(pkValue))
+	expr, err := expression.NewBuilder().WithKeyCondition(keyCondition).Build()
+	if err != nil {
+		return nil, err
+	}
+	params := &dynamodb.QueryInput{
+		KeyConditionExpression:    expr.KeyCondition(),
+		ExpressionAttributeNames:  expr.Names(),
+		ExpressionAttributeValues: expr.Values(),
+		TableName:                 aws.String(c.tableName),
+	}
+	return params, nil
+}
+
+// this method allow you to retrieve all items with a given PK
+// it will get ALL the elements with the provided PK.
+func (c *client) getAllByPK(pkValue partitionKey) ([]map[string]*dynamodb.AttributeValue, error) {
+	params, err := c.queryInputGetByPK(pkValue)
+	if err != nil {
+		return nil, err
+	}
+	itemsRetrieved := make([]map[string]*dynamodb.AttributeValue, 0)
+	pageNum := 0
+	//exec query
+	err = c.dynamoDB.QueryPages(params, func(page *dynamodb.QueryOutput, lastPage bool) bool {
+		itemsRetrieved = append(itemsRetrieved, page.Items...)
+		pageNum++
+		return true
+	})
+	if err != nil {
+		return nil, err
+	}
+	return itemsRetrieved, nil
 }

@@ -62,6 +62,14 @@ func (s *Server) CreateProduct(c *gin.Context) {
 }
 
 func (s *Server) GetAllProducts(c *gin.Context) {
-	panic("todo")
-
+	products, err := s.productStore.GetAll()
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	if len(products) == 0 {
+		c.Status(http.StatusNotFound)
+		return
+	}
+	c.JSON(http.StatusOK, products)
 }

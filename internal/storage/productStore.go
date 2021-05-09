@@ -6,6 +6,9 @@ import (
 	"github.com/maximilienandile/producti/internal/product"
 )
 
+// ErrNotFound is returned when no results are found
+var ErrNotFound = errors.New("element not found")
+
 // ProductStore is an interface that lists all methods to
 // store and retrieve Products.
 type ProductStore interface {
@@ -15,7 +18,6 @@ type ProductStore interface {
 	GetByID(ID string) (*product.Product, error)
 	// GetByName will search products by name (full-text search)
 	GetByName(name string) ([]*product.Product, error)
+	// GetAll will retrieve all products
+	GetAll() ([]*product.Product, error)
 }
-
-// ErrNotFound is returned when no results are found
-var ErrNotFound = errors.New("element not found")

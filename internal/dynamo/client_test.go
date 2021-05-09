@@ -102,3 +102,19 @@ func TestGetByKeyFound(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, out)
 }
+
+func TestGetAllByPK(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	mockedDynamo := mocks.NewMockrequestor(ctrl)
+	tableName := "myTable"
+	testClient := client{
+		dynamoDB:  mockedDynamo,
+		tableName: tableName,
+	}
+	query, err := testClient.queryInputGetByPK(productPk)
+	assert.Nil(t, err)
+	mockedDynamo.EXPECT().QueryPages(query, gomock.Any()).Return(nil)
+	_, err = testClient.getAllByPK(productPk)
+	assert.Nil(t, err)
+}
