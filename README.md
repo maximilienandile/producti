@@ -92,6 +92,36 @@ The project is deployed to the AWS cloud with the Serverless framework.
     * to get more info about DynamoDb Streams : [see here](https://www.serverless.com/blog/event-driven-architecture-dynamodb) 
 * When a search by product name occurs, a queery is made to the Algolia Index
 
+## Tests
+
+### Unit Tests
+
+
+To launch unit tests execute :
+
+```
+$ make unit_tests 
+```
+
+### Functional tests
+
+To launch functional tests first deploy to a web server the API then execute this command :
+
+```
+$ make functional_tests base-url=http://localhost:8080
+```
+
+### Linter
+
+We use golangci-lint (https://golangci-lint.run/usage/quick-start/)
+
+Before launching the linter you need to install it. (see here for instructions : https://golangci-lint.run/usage/install/)
+
+To launch the linter execute :
+
+```
+$ make lint
+```
 
 ## Mocks Generation
 
@@ -103,7 +133,7 @@ Mocks generated are in `interal/mocks`, in the package `mocks`.
 To generate a mock of an interface use this command :
 
 ```
-mockgen -source=internal/storage/productStore.go -destination=internal/mocks/productStore.go -package=mocks
+$ make mocks
 ```
 
 ## Contributing
@@ -119,12 +149,13 @@ Please make sure to update tests as appropriate.
 - [ ] GET /product/{id} 
 - [ ] GET /product?search=[NAME] 
 - [ ] Api documentation
-- [ ] Linter
-- [ ] Deployment
+- [x] Linter
+- [x] Deployment
 
 Extra
 
-- [ ] POST /product
+- [x] POST /product
+- [ ] CI setup Github
 
 
 ## License

@@ -14,3 +14,10 @@ deploy_prod: clean build
     	--aws-profile $(aws_profile) \
     	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage prod
+unit_tests:
+	go test ./...
+lint:
+	golangci-lint run --enable-all
+mocks:
+	mockgen -source=internal/storage/productStore.go -destination=internal/mocks/productStore.go -package=mocks
+	mockgen -source=internal/dynamo/requestor.go -destination=internal/mocks/requestor.go -package=mocks
