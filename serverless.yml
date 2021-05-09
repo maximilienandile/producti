@@ -60,6 +60,11 @@ resources:
     productsTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
         TableName: ${self:custom.tableName}
         BillingMode: PAY_PER_REQUEST
         KeySchema:
