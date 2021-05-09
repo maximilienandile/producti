@@ -59,7 +59,7 @@ func (p ProductStore) unmarshallProduct(out map[string]*dynamodb.AttributeValue)
 	productUnmarshalled := product.Product{}
 	err := dynamodbattribute.UnmarshalMap(out, &productUnmarshalled)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("impossible to unmarshall product: %w", err)
 	}
 	return &productUnmarshalled, nil
 }

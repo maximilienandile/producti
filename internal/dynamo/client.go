@@ -74,7 +74,7 @@ func (c *client) getByKey(partitionKeyValue partitionKey, sortKeyValue string) (
 		},
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("impossible to get item in db: %w", err)
 	}
 	if len(result.Item) == 0 {
 		return nil, storage.ErrNotFound
