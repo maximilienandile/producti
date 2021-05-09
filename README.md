@@ -26,19 +26,53 @@ $ go build -o indexer cmd/indexer/main.go
 * Install Serverless globally `npm install -g serverless`
 * Install Go [see here](https://golang.org/dl/)
 * Install make (should be already installed on MacOS and some Linux distros, installation necessary for Windows)
+* 
 
 
-### Deployment in `develop` stage
+### Manual Env Setup in AWS
+
+* Create two KMS keys (Customer Managed Keys)
+    * For the **develop** env
+        * Alias : `ssm-encryption-key-producti-develop`
+        * Key Spec : Symmetric
+        * Note the Key Id
+    * For the **prod** env
+        * Alias : `ssm-encryption-key-producti-prod`
+        * Key Spec : Symmetric
+        * Note the Key Id
+* Create two Parameters in SSM (System Manager > Application Management > Parameter Store)
+    * For the **develop** env
+        * Name : `/producti/develop/secrets`
+        * Tier : standard
+        * Tpe : SecureString
+        * Data Type : text
+        * KMS Kay Source : 'My Current Account' => Select key with alias : `ssm-encryption-key-producti-develop`
+        * Value : see `doc/secrets.example.json`
+    * For the **prod** env
+        * Name : `/producti/prod/secrets`
+        * Tier : standard
+        * Tpe : SecureString
+        * Data Type : text
+        * KMS Kay Source : 'My Current Account' => Select key with alias : `ssm-encryption-key-producti-prod`
+        * Value : see `doc/secrets.example.json`
+     
+### Deployment 
+
+Note that the DynamoDb table will be created !
+
+
+#### Prod
 
 ```
-$ make deploy_develop
+$ make deploy_prod aws-profile=profileName kms-ssm-key-id=XXXX
 ```
 
-### Deployment in `prod` stage
+### Develop
 
 ```
-$ make deploy_prod
+$ make deploy_develop aws-profile=profileName kms-ssm-key-id=XXXX
 ```
+
 
 ## Architecture
 
@@ -53,7 +87,6 @@ The project is deployed to the AWS cloud with the Serverless framework.
  to an Algolia Index
     * to get more info about DynamoDb Streams : [see here](https://www.serverless.com/blog/event-driven-architecture-dynamodb) 
 * When a search by product name occurs, a queery is made to the Algolia Index
-
 
 
 ## Contributing

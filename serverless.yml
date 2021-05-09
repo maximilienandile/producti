@@ -1,13 +1,13 @@
 # Options
 # -----------
 # stage : the deployment stage
+# kms-ssm-key-id : id of the key in KMS used to encrypt SSM secrets
 
 service: producti
 frameworkVersion: '>=1.28.0'
 custom:
   tableName: ${opt:stage}-producti
   ssmParameterStoreName: /producti/${opt:stage}/secrets
-  ssmEncryptionKeyAlias: ssm-encryption-key-producti-${opt:stage}
 provider:
   name: aws
   runtime: go1.x
@@ -22,7 +22,7 @@ provider:
     STAGE: ${opt:stage}
     DYNAMO_TABLE_NAME: ${self:custom.tableName}
     PARAMETER_STORE_NAME: ${self:custom.ssmParameterStoreName}
-    ACTIVATE_AWS_LOGS: false
+    ACTIVATE_AWS_LOGS: true
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -68,7 +68,7 @@ provider:
           - - 'arn:aws:kms'
             - Ref: 'AWS::Region'
             - Ref: 'AWS::AccountId'
-            - alias/${self:custom.ssmEncryptionKeyAlias}
+            - key/${opt:kms-ssm-key-id}
 package:
   exclude:
     - ./**

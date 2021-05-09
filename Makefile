@@ -6,9 +6,11 @@ clean:
 	rm -rf ./bin
 deploy_develop: clean build
 	sls deploy --verbose \
-    	--aws-profile maxaldtools \
+    	--aws-profile $(aws-profile) \
+    	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage develop
 deploy_prod: clean build
 	sls deploy --verbose \
-    	--aws-profile maxaldtools \
+    	--aws-profile $(aws_profile) \
+    	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage prod
