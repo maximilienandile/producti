@@ -4,20 +4,22 @@ build:
 	env GOOS=linux go build -ldflags="-s -w" -o bin/indexer cmd/indexer/main.go
 clean:
 	rm -rf ./bin
-deploy_develop: clean build
+deploy_develop: unit_tests lint clean build
 	sls deploy --verbose \
     	--aws-profile $(aws-profile) \
     	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage develop
-deploy_prod: clean build
+deploy_prod: unit_tests lint clean build
 	sls deploy --verbose \
     	--aws-profile $(aws_profile) \
     	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage prod
 unit_tests:
 	go test ./...
-lint:
+lint_all:
 	golangci-lint run --enable-all
+lint:
+	golangci-lint run
 mocks:
 	mockgen -source=internal/storage/productStore.go -destination=internal/mocks/productStore.go -package=mocks
 	mockgen -source=internal/dynamo/requestor.go -destination=internal/mocks/requestor.go -package=mocks
