@@ -2,6 +2,10 @@
 
 Producti is a product API written in Go for e-commerce websites.
 
+
+
+
+
 ## Compilation
 
 For the `api` lambda :
@@ -89,11 +93,39 @@ The project is deployed to the AWS cloud with the Serverless framework.
 * When a search by product name occurs, a queery is made to the Algolia Index
 
 
+## Mocks Generation
+
+
+Interfaces of this project are mocked using [GoMock](https://github.com/golang/mock).
+
+Mocks generated are in `interal/mocks`, in the package `mocks`.
+
+To generate a mock of an interface use this command :
+
+```
+mockgen -source=internal/storage/productStore.go -destination=internal/mocks/productStore.go -package=mocks
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+
+## Tasks
+
+- [ ] GET /products
+- [ ] GET /product/{id} 
+- [ ] GET /product?search=[NAME] 
+- [ ] Api documentation
+- [ ] Linter
+- [ ] Deployment
+
+Extra
+
+- [ ] POST /product
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
