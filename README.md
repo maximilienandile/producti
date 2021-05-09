@@ -143,7 +143,7 @@ Please make sure to update tests as appropriate.
 ## Tasks
 
 - [ ] GET /products
-- [ ] GET /product/{id} 
+- [x] GET /product/{id} 
 - [ ] GET /product?search=[NAME] 
 - [ ] Api documentation
 - [x] Linter
