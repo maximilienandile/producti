@@ -142,10 +142,10 @@ Please make sure to update tests as appropriate.
 
 ## Tasks
 
-- [ ] GET /products
+- [x] GET /products
 - [x] GET /product/{id} 
 - [ ] GET /product?search=[NAME] 
-- [ ] Api documentation
+- [ ] API documentation
 - [x] Linter
 - [x] Deployment
 
