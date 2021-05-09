@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/maximilienandile/producti/internal/storage"
+
 	"github.com/stretchr/testify/assert"
 
 	"github.com/maximilienandile/producti/internal/secret"
@@ -89,4 +91,50 @@ func TestCreateProductBadRequest(t *testing.T) {
 	// send the test request
 	testServer.GinEngine.ServeHTTP(w, testRequest)
 	assert.Equal(t, http.StatusBadRequest, w.Code)
+}
+
+func TestGetProductByID(t *testing.T) {
+	// setup mock
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	m := mocks.NewMockProductStore(ctrl)
+	m.EXPECT().GetByID("42").Return(&testProduct, nil)
+	// build test server
+	conf := Config{
+		Secrets:      secret.Parameters{},
+		ProductStore: m,
+	}
+	testServer := New(&conf)
+	// create response recorder
+	w := httptest.NewRecorder()
+	// build test request
+	testRequest, err := http.NewRequest("GET", "/product/42", nil)
+	assert.Nil(t, err)
+	// send the test request
+	testServer.GinEngine.ServeHTTP(w, testRequest)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, testProductJSON, w.Body.String())
+
+}
+
+func TestGetProductByIDNotFound(t *testing.T) {
+	// setup mock
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	m := mocks.NewMockProductStore(ctrl)
+	m.EXPECT().GetByID("42").Return(nil, storage.ErrNotFound)
+	// build test server
+	conf := Config{
+		Secrets:      secret.Parameters{},
+		ProductStore: m,
+	}
+	testServer := New(&conf)
+	// create response recorder
+	w := httptest.NewRecorder()
+	// build test request
+	testRequest, err := http.NewRequest("GET", "/product/42", nil)
+	assert.Nil(t, err)
+	// send the test request
+	testServer.GinEngine.ServeHTTP(w, testRequest)
+	assert.Equal(t, http.StatusNotFound, w.Code)
 }
