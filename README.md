@@ -3,9 +3,6 @@
 Producti is a product API written in Go for e-commerce websites.
 
 
-
-
-
 ## Compilation
 
 For the `api` lambda :
@@ -30,7 +27,7 @@ $ go build -o indexer cmd/indexer/main.go
 * Install Serverless globally `npm install -g serverless`
 * Install Go [see here](https://golang.org/dl/)
 * Install make (should be already installed on MacOS and some Linux distros, installation necessary for Windows)
-* 
+* Install golangci-ling [see here](https://golangci-lint.run/usage/install/)
 
 
 ### Manual Env Setup in AWS

@@ -1,3 +1,4 @@
 .idea
 .serverless
 bin
+deployMax.sh
