@@ -14,7 +14,7 @@ deploy_prod: unit_tests lint clean build
     	--aws-profile $(aws_profile) \
     	--kms-ssm-key-id $(kms-ssm-key-id) \
     	--stage prod
-unit_tests:
+unit_tests: mocks
 	go test ./...
 lint_all:
 	golangci-lint run --enable-all
