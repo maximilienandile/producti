@@ -26,3 +26,31 @@
         - X-Amz-Security-Token
         - X-Amz-User-Agent
         - Cache-Control
+- http:
+    path: /products
+    method: get
+    cors:
+      origins:
+        - http://localhost:8080
+      headers:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+        - Cache-Control
+- http:
+    path: /product
+    method: post
+    cors:
+      origins:
+        - http://localhost:8080
+      headers:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+        - Cache-Control
