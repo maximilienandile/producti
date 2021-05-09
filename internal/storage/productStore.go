@@ -1,6 +1,10 @@
 package storage
 
-import "github.com/maximilienandile/producti/internal/product"
+import (
+	"errors"
+
+	"github.com/maximilienandile/producti/internal/product"
+)
 
 // ProductStore is an interface that lists all methods to
 // store and retrieve Products.
@@ -12,3 +16,6 @@ type ProductStore interface {
 	// GetByName will search products by name (full-text search)
 	GetByName(name string) ([]*product.Product, error)
 }
+
+// ErrNotFound is returned when no results are found
+var ErrNotFound = errors.New("element not found")
