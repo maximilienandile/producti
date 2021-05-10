@@ -21,3 +21,5 @@ jobs:
       run: go install github.com/golang/mock/mockgen@v1.5.0      
     - name: Unit Tests
       run: make unit_tests
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v2.5.2
