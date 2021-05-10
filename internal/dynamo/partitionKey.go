@@ -1,8 +1,8 @@
 package dynamo
 
 // this type represents a partition Key used in our database
-type partitionKey string
+type PartitionKey string
 
 const (
-	productPk partitionKey = "product"
+	ProductPk PartitionKey = "product"
 )

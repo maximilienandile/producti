@@ -21,13 +21,13 @@ func TestPut(t *testing.T) {
 
 	tableName := "myTable"
 	testClient := client{
-		dynamoDB:  mockedDynamo,
+		requestor: mockedDynamo,
 		tableName: tableName,
 	}
-	putReq := putRequest{
+	putReq := PutRequest{
 		object: product.Product{},
 		sk:     "458888",
-		pk:     productPk,
+		pk:     ProductPk,
 	}
 	marshalled, err := testClient.marshallInput(putReq)
 	assert.Nil(t, err)
@@ -37,7 +37,7 @@ func TestPut(t *testing.T) {
 	}
 	// PutItem should be called
 	mockedDynamo.EXPECT().PutItem(expectedInput).Return(&dynamodb.PutItemOutput{}, nil)
-	err = testClient.put(putReq)
+	err = testClient.Put(putReq)
 	assert.Nil(t, err)
 }
 
@@ -48,24 +48,24 @@ func TestMarshallInput(t *testing.T) {
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 
 	testClient := client{
-		dynamoDB:  mockedDynamo,
+		requestor: mockedDynamo,
 		tableName: "My Table",
 	}
 	skTest := "458888"
-	putReq := putRequest{
+	putReq := PutRequest{
 		object: product.Product{},
 		sk:     skTest,
-		pk:     productPk,
+		pk:     ProductPk,
 	}
 
 	marshalled, err := testClient.marshallInput(putReq)
 	assert.Nil(t, err)
-	// check that sk and pk are set correctly
-	pkRetrieved, found := marshalled[pk]
+	// check that Sk and Pk are set correctly
+	pkRetrieved, found := marshalled[Pk]
 	assert.True(t, found)
-	assert.Equal(t, string(productPk), *pkRetrieved.S)
+	assert.Equal(t, string(ProductPk), *pkRetrieved.S)
 
-	skRetrieved, found := marshalled[sk]
+	skRetrieved, found := marshalled[Sk]
 	assert.True(t, found)
 	assert.Equal(t, skTest, *skRetrieved.S)
 }
@@ -75,30 +75,30 @@ func TestGetByKeyFound(t *testing.T) {
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 
-	testPk := productPk
+	testPk := ProductPk
 	testSK := "42"
 	tableName := "myTable"
 	testClient := client{
-		dynamoDB:  mockedDynamo,
+		requestor: mockedDynamo,
 		tableName: tableName,
 	}
 	mockedDynamo.EXPECT().GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]*dynamodb.AttributeValue{
-			pk: {
+			Pk: {
 				S: aws.String(string(testPk)),
 			},
-			sk: {
+			Sk: {
 				S: aws.String(testSK),
 			},
 		},
 	}).Return(&dynamodb.GetItemOutput{
 		Item: map[string]*dynamodb.AttributeValue{
-			pk: {S: aws.String(string(testPk))},
-			sk: {S: aws.String(testSK)},
+			Pk: {S: aws.String(string(testPk))},
+			Sk: {S: aws.String(testSK)},
 		},
 	}, nil)
-	out, err := testClient.getByKey(testPk, testSK)
+	out, err := testClient.GetByKey(testPk, testSK)
 	assert.Nil(t, err)
 	assert.NotNil(t, out)
 }
@@ -109,12 +109,12 @@ func TestGetAllByPK(t *testing.T) {
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 	tableName := "myTable"
 	testClient := client{
-		dynamoDB:  mockedDynamo,
+		requestor: mockedDynamo,
 		tableName: tableName,
 	}
-	query, err := testClient.queryInputGetByPK(productPk)
+	query, err := testClient.queryInputGetByPK(ProductPk)
 	assert.Nil(t, err)
 	mockedDynamo.EXPECT().QueryPages(query, gomock.Any()).Return(nil)
-	_, err = testClient.getAllByPK(productPk)
+	_, err = testClient.GetAllByPK(ProductPk)
 	assert.Nil(t, err)
 }
