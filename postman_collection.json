@@ -1,0 +1,180 @@
+{
+  "info": {
+    "_postman_id": "42a5f4d4-1ed7-477a-95ee-8055c35e4c14",
+    "name": "Producti Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status test\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"response must be valid and have a body JSON\", function () {",
+              "     pm.response.to.be.withBody;",
+              "     pm.response.to.be.json;",
+              "     const responseJson = pm.response.json();",
+              "",
+              "     pm.variables.set(\"productId\", responseJson.id);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n        \"id\": \"\",\n        \"name\": \"Leather bag marque 1 Delacroix\",\n        \"originalPrice\": {\n            \"currency\": \"EUR\",\n            \"cents\": 24293,\n            \"formatted\": \"$242.93\"\n        },\n        \"brand\": {\n            \"id\": \"0\",\n            \"type\": \"brand\",\n            \"name\": \"A Cuckoo Moment...\",\n            \"localizedName\": \"a cuckoo moment...\"\n        },\n        \"followers\": 18,\n        \"daysOnline\": 389,\n        \"viewsSinceLastWeek\": 0,\n        \"isPriceDropAlertView\": false,\n        \"isPriceDropAlertDaysOnline\": false,\n        \"pictures\": [\n            {\n                \"alt\": \"\",\n                \"path\": \"9624985-1_1.jpg\"\n            }\n        ],\n        \"priceDropped\": {\n            \"currency\": \"EUR\",\n            \"cents\": 17352,\n            \"formatted\": \"$173.52\"\n        },\n        \"recommendedPrice\": {\n            \"currency\": \"EUR\",\n            \"cents\": 17352,\n            \"formatted\": \"172.52\"\n        }\n    },\n    {\n        \"id\": \"3\",\n        \"name\": \"Leather low trainers\",\n        \"originalPrice\": {\n            \"currency\": \"EUR\",\n            \"cents\": 17967,\n            \"formatted\": \"$179.67\"\n        },\n        \"brand\": {\n            \"id\": \"0\",\n            \"type\": \"brand\",\n            \"name\": \"Pablo\",\n            \"localizedName\": \"pablo\"\n        },\n        \"followers\": 18,\n        \"daysOnline\": 389,\n        \"viewsSinceLastWeek\": 0,\n        \"isPriceDropAlertView\": false,\n        \"isPriceDropAlertDaysOnline\": false,\n        \"pictures\": [\n            {\n                \"alt\": \"\",\n                \"path\": \"9624481-1_1.jpg\"\n            }\n        ],\n        \"priceDropped\": {\n            \"currency\": \"EUR\",\n            \"cents\": 15304,\n            \"formatted\": \"$153.04\"\n        },\n        \"recommendedPrice\": {\n            \"currency\": \"EUR\",\n            \"cents\": 15304,\n            \"formatted\": \"152.04\"\n        }\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/product",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "product"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Product By ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status test\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"response must be valid and have a body JSON\", function () {",
+              "     pm.response.to.be.withBody;",
+              "     pm.response.to.be.json;",
+              "     const responseJson = pm.response.json();",
+              "     const productId = pm.variables.get(\"productId\");",
+              "    pm.expect(responseJson.id).to.eql(productId);",
+              "",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/product/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "product",
+            "{{productId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Products",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status test\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"response must be valid and have a body JSON\", function () {",
+              "    pm.response.to.be.withBody;",
+              "    pm.response.to.be.json;",
+              "",
+              "});",
+              "",
+              "pm.test(\"response is an array\", function () {",
+              "    pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status test\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"response must be valid and have a body JSON\", function () {",
+              "    pm.response.to.be.withBody;",
+              "    pm.response.to.be.json;",
+              "",
+              "});",
+              "",
+              "pm.test(\"response is an array\", function () {",
+              "    pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/product?search=Delacroix",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "product"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "Delacroix"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
