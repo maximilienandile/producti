@@ -35,6 +35,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:ConditionCheckItem
         - dynamodb:BatchWriteItem
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
       Resource:
         - 'Fn::Join':
             - ':'
@@ -78,6 +82,13 @@ functions:
   api:
     handler: bin/api
     events: ${file(routes.yml)}
+  indexer:
+    handler: bin/indexer
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [ productsTable, StreamArn ]
 resources:
   Resources:
     productsTable:
@@ -90,6 +101,8 @@ resources:
             AttributeType: S
         TableName: ${self:custom.tableName}
         BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
         KeySchema:
           - AttributeName: PK
             KeyType: HASH
