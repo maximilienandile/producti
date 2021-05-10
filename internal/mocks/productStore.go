@@ -78,18 +78,3 @@ func (mr *MockProductStoreMockRecorder) GetByID(ID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockProductStore)(nil).GetByID), ID)
 }
-
-// GetByName mocks base method.
-func (m *MockProductStore) GetByName(name string) ([]*product.Product, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByName", name)
-	ret0, _ := ret[0].([]*product.Product)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetByName indicates an expected call of GetByName.
-func (mr *MockProductStoreMockRecorder) GetByName(name interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByName", reflect.TypeOf((*MockProductStore)(nil).GetByName), name)
-}
