@@ -49,7 +49,7 @@ func TestCreateProductOK(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	m := mocks.NewMockProductStore(ctrl)
-	m.EXPECT().Create(&testProduct).Return(&testProduct, nil)
+	m.EXPECT().Create(gomock.Any()).Return(&testProduct, nil)
 
 	// build test server
 	conf := Config{

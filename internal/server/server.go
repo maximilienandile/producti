@@ -2,17 +2,20 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/maximilienandile/producti/internal/indexing"
 	"github.com/maximilienandile/producti/internal/storage"
 )
 
 type Server struct {
-	productStore storage.ProductStore
-	GinEngine    *gin.Engine
+	productStore   storage.ProductStore
+	productIndexer indexing.ProductIndexer
+	GinEngine      *gin.Engine
 }
 
 func New(conf *Config) *Server {
 	s := Server{}
 	s.productStore = conf.ProductStore
+	s.productIndexer = conf.ProductIndexer
 	// initialize new gin engine
 	r := gin.New()
 	gin.SetMode(gin.ReleaseMode)
