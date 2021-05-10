@@ -88,6 +88,7 @@ The project is deployed to the AWS cloud with the Serverless framework.
  to an Algolia Index
     * to get more info about DynamoDb Streams : [see here](https://www.serverless.com/blog/event-driven-architecture-dynamodb) 
 * When a search by product name occurs, a queery is made to the Algolia Index
+* AWS System Manager Parameter Store is used to store the application secrets (ie. Algolia credentials)
 
 
 ## Code Organization
