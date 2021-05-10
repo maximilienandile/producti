@@ -31,10 +31,6 @@ func init() {
 	if !found {
 		log.Fatal("impossible to start server no TABLE_NAME env value")
 	}
-	stage, found := os.LookupEnv("STAGE")
-	if !found {
-		log.Fatal("impossible to start server no STAGE env value")
-	}
 	// load secrets from SSM parameter store
 	parameterStoreName, found := os.LookupEnv("PARAMETER_STORE_NAME")
 	if !found {
@@ -72,8 +68,6 @@ func init() {
 	config := server.Config{
 		ProductStore:   dynamo.NewProductStore(tableName, awsSession),
 		ProductIndexer: indexing.NewAlgoliaProductIndexer(secrets.Algolia),
-		Secrets:        secrets,
-		Stage:          stage,
 	}
 	s := server.New(&config)
 	ginLambda = ginadapter.New(s.GinEngine)

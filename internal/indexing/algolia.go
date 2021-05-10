@@ -24,8 +24,8 @@ func NewAlgoliaProductIndexer(algoliaConf secret.Algolia) ProductIndexer {
 }
 
 func (a AlgoliaProductIndexer) AddProduct(product *product.Indexed) error {
+	// will save an object into the index making it available for search
 	_, err := a.indexClient.SaveObject(product)
-
 	return err
 }
 

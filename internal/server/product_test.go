@@ -11,8 +11,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/maximilienandile/producti/internal/secret"
-
 	"github.com/golang/mock/gomock"
 	"github.com/maximilienandile/producti/internal/brand"
 	"github.com/maximilienandile/producti/internal/mocks"
@@ -53,7 +51,6 @@ func TestCreateProductOK(t *testing.T) {
 
 	// build test server
 	conf := Config{
-		Secrets:      secret.Parameters{},
 		ProductStore: m,
 	}
 	testServer := New(&conf)
@@ -77,7 +74,6 @@ func TestCreateProductBadRequest(t *testing.T) {
 	m := mocks.NewMockProductStore(ctrl)
 	// build test server
 	conf := Config{
-		Secrets:      secret.Parameters{},
 		ProductStore: m,
 	}
 	testServer := New(&conf)
@@ -101,7 +97,6 @@ func TestGetProductByID(t *testing.T) {
 	m.EXPECT().GetByID("42").Return(&testProduct, nil)
 	// build test server
 	conf := Config{
-		Secrets:      secret.Parameters{},
 		ProductStore: m,
 	}
 	testServer := New(&conf)
@@ -125,7 +120,6 @@ func TestGetProductByIDNotFound(t *testing.T) {
 	m.EXPECT().GetByID("42").Return(nil, storage.ErrNotFound)
 	// build test server
 	conf := Config{
-		Secrets:      secret.Parameters{},
 		ProductStore: m,
 	}
 	testServer := New(&conf)

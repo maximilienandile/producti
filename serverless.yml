@@ -19,7 +19,6 @@ provider:
       - 'multipart/form-data'
     minimumCompressionSize: 1024
   environment:
-    STAGE: ${opt:stage}
     DYNAMO_TABLE_NAME: ${self:custom.tableName}
     PARAMETER_STORE_NAME: ${self:custom.ssmParameterStoreName}
     ACTIVATE_AWS_LOGS: true

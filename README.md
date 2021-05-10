@@ -9,7 +9,6 @@ For the `api` lambda :
 $ go build -o api cmd/api/main.go
 ```
 
-
 For the `indexer` lambda :
 ```
 $ go build -o indexer cmd/indexer/main.go
@@ -57,10 +56,11 @@ $ go build -o indexer cmd/indexer/main.go
         * KMS Kay Source : 'My Current Account' => Select key with alias : `ssm-encryption-key-producti-prod`
         * Value : see `doc/secrets.example.json`
      
-### Deployment 
+### Deployment (with Serverless)
 
-Note that the DynamoDb table will be created !
+Note that the DynamoDb table will be created ! 
 
+Warning ! : When the stack is removed the database will be ALSO deleted...
 
 #### Prod
 
@@ -88,6 +88,7 @@ The project is deployed to the AWS cloud with the Serverless framework.
  to an Algolia Index
     * to get more info about DynamoDb Streams : [see here](https://www.serverless.com/blog/event-driven-architecture-dynamodb) 
 * When a search by product name occurs, a queery is made to the Algolia Index
+* AWS System Manager Parameter Store is used to store the application secrets (ie. Algolia credentials)
 
 
 ## Code Organization
@@ -231,6 +232,14 @@ Extra
 - [x] Postman Collection for functional tests
 - [x] Add Unit tests
 - [x] CI setup Github
+
+TODO
+
+-  Extend the project to orders, clients,....
+-  Add a PUT endpoint to update a product (be careful to index again if title has changed)
+-  Stock management
+- Create a module for dynamodb manipulation ?
+
 
 
 ## License
