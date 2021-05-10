@@ -12,9 +12,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-// an internal DynamoDb client designed to
+// an internal DynamoDb simpleClient designed to
 // make the interaction with the database easier.
-type client struct {
+// this is an implementation of Client
+type simpleClient struct {
 	requestor requestor
 	tableName string
 }
@@ -34,7 +35,7 @@ const Sk = "SK"
 
 // put will insert an item into the database
 // the item will be marshalled before insertion
-func (c client) Put(req PutRequest) error {
+func (c simpleClient) Put(req PutRequest) error {
 	marshalled, err := c.marshallInput(req)
 	if err != nil {
 		return fmt.Errorf("impossible to marshall item: %w", err)
@@ -52,7 +53,7 @@ func (c client) Put(req PutRequest) error {
 
 // marshallInput generates a marshalled version of a put request
 // Pk and Sk are added to the object
-func (c client) marshallInput(req PutRequest) (map[string]*dynamodb.AttributeValue, error) {
+func (c simpleClient) marshallInput(req PutRequest) (map[string]*dynamodb.AttributeValue, error) {
 	marshalled, err := dynamodbattribute.MarshalMap(req.object)
 	if err != nil {
 		return nil, fmt.Errorf("error encountered when attempt to marshall object before Put: %w", err)
@@ -64,7 +65,7 @@ func (c client) marshallInput(req PutRequest) (map[string]*dynamodb.AttributeVal
 }
 
 // this method allow you to get an item in dynamo by PK and SK
-func (c *client) GetByKey(partitionKeyValue PartitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
+func (c *simpleClient) GetByKey(partitionKeyValue PartitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
 	result, err := c.requestor.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(c.tableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -85,7 +86,7 @@ func (c *client) GetByKey(partitionKeyValue PartitionKey, sortKeyValue string) (
 	return result.Item, nil
 }
 
-func (c *client) queryInputGetByPK(pkValue PartitionKey) (*dynamodb.QueryInput, error) {
+func (c *simpleClient) queryInputGetByPK(pkValue PartitionKey) (*dynamodb.QueryInput, error) {
 	keyCondition := expression.Key(Pk).Equal(expression.Value(pkValue))
 	expr, err := expression.NewBuilder().WithKeyCondition(keyCondition).Build()
 	if err != nil {
@@ -102,7 +103,7 @@ func (c *client) queryInputGetByPK(pkValue PartitionKey) (*dynamodb.QueryInput, 
 
 // this method allow you to retrieve all items with a given PK
 // it will get ALL the elements with the provided PK.
-func (c *client) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynamodb.AttributeValue, error) {
+func (c *simpleClient) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynamodb.AttributeValue, error) {
 	params, err := c.queryInputGetByPK(pkValue)
 	if err != nil {
 		return nil, err

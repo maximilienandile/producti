@@ -13,9 +13,10 @@ type Server struct {
 }
 
 func New(conf *Config) *Server {
-	s := Server{}
-	s.productStore = conf.ProductStore
-	s.productIndexer = conf.ProductIndexer
+	s := Server{
+		productStore:   conf.ProductStore,
+		productIndexer: conf.ProductIndexer,
+	}
 	// initialize new gin engine
 	r := gin.New()
 	gin.SetMode(gin.ReleaseMode)

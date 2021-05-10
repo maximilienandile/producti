@@ -68,5 +68,4 @@ func TestProductStore_GetByID(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "42", actual.ID)
 	assert.Equal(t, "Tot Bag", actual.Name)
-
 }

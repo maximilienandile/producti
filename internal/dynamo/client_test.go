@@ -21,7 +21,7 @@ func TestPut(t *testing.T) {
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 
-	testClient := client{
+	testClient := simpleClient{
 		requestor: mockedDynamo,
 		tableName: tableName,
 	}
@@ -47,7 +47,7 @@ func TestMarshallInput(t *testing.T) {
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 
-	testClient := client{
+	testClient := simpleClient{
 		requestor: mockedDynamo,
 		tableName: "My Table",
 	}
@@ -78,7 +78,7 @@ func TestGetByKeyFound(t *testing.T) {
 	testPk := ProductPk
 	testSK := "42"
 	tableName := "myTable"
-	testClient := client{
+	testClient := simpleClient{
 		requestor: mockedDynamo,
 		tableName: tableName,
 	}
@@ -108,7 +108,7 @@ func TestGetAllByPK(t *testing.T) {
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 	tableName := "myTable"
-	testClient := client{
+	testClient := simpleClient{
 		requestor: mockedDynamo,
 		tableName: tableName,
 	}

@@ -4,5 +4,6 @@ package dynamo
 type PartitionKey string
 
 const (
+	// Used to store products
 	ProductPk PartitionKey = "product"
 )

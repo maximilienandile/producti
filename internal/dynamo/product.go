@@ -3,7 +3,7 @@ package dynamo
 import (
 	"fmt"
 
-	"github.com/aws/aws-sdk-go/aws/session"
+	awsClient "github.com/aws/aws-sdk-go/aws/client"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/maximilienandile/producti/internal/product"
 	"github.com/maximilienandile/producti/internal/storage"
@@ -15,10 +15,10 @@ type ProductStore struct {
 }
 
 // Initialize the the product Store
-func NewProductStore(tableName string, awsSession *session.Session) storage.ProductStore {
+func NewProductStore(tableName string, provider awsClient.ConfigProvider) storage.ProductStore {
 	repo := ProductStore{
-		client: &client{
-			dynamodb.New(awsSession),
+		client: &simpleClient{
+			dynamodb.New(provider),
 			tableName,
 		},
 	}

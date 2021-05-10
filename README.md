@@ -9,7 +9,6 @@ For the `api` lambda :
 $ go build -o api cmd/api/main.go
 ```
 
-
 For the `indexer` lambda :
 ```
 $ go build -o indexer cmd/indexer/main.go
@@ -57,10 +56,11 @@ $ go build -o indexer cmd/indexer/main.go
         * KMS Kay Source : 'My Current Account' => Select key with alias : `ssm-encryption-key-producti-prod`
         * Value : see `doc/secrets.example.json`
      
-### Deployment 
+### Deployment (with Serverless)
 
-Note that the DynamoDb table will be created !
+Note that the DynamoDb table will be created ! 
 
+Warning ! : When the stack is removed the database will be ALSO deleted...
 
 #### Prod
 
@@ -232,6 +232,14 @@ Extra
 - [x] Postman Collection for functional tests
 - [x] Add Unit tests
 - [x] CI setup Github
+
+TODO
+
+-  Extend the project to orders, clients,....
+-  Add a PUT endpoint to update a product (be careful to index again if title has changed)
+-  Stock management
+- Create a module for dynamodb manipulation ?
+
 
 
 ## License

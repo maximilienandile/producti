@@ -22,6 +22,8 @@ type Product struct {
 }
 
 // Indexed is the product representation indexed.
+// Note that just the fields indexed are in that struct.
+// It is made to make the index lighter (we do not want fields in the index that are not searchable).
 type Indexed struct {
 	ProductID string `json:"objectID"`
 	Name      string `json:"name"`
