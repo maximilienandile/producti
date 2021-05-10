@@ -11,7 +11,7 @@ import (
 
 // An implementation of storage.ProductStore with DynamoDb
 type ProductStore struct {
-	client DynamoClient
+	client Client
 }
 
 // Initialize the the product Store

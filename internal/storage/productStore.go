@@ -6,7 +6,7 @@ import (
 	"github.com/maximilienandile/producti/internal/product"
 )
 
-// ErrNotFound is returned when no results are found
+// ErrNotFound is returned when no results are found.
 var ErrNotFound = errors.New("element not found")
 
 // ProductStore is an interface that lists all methods to

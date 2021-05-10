@@ -2,7 +2,7 @@ package secret
 
 type Algolia struct {
 	AppID     string `json:"appId"`
-	ApiKey    string `json:"apiKey"`
+	APIKey    string `json:"apiKey"`
 	IndexName string `json:"indexName"`
 }
 

@@ -13,13 +13,14 @@ import (
 	"github.com/maximilienandile/producti/internal/product"
 )
 
+const tableName = "myTable"
+
 func TestPut(t *testing.T) {
 	// setup mock
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)
 
-	tableName := "myTable"
 	testClient := client{
 		requestor: mockedDynamo,
 		tableName: tableName,
@@ -42,7 +43,6 @@ func TestPut(t *testing.T) {
 }
 
 func TestMarshallInput(t *testing.T) {
-
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockedDynamo := mocks.NewMockrequestor(ctrl)

@@ -11,31 +11,31 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockDynamoClient is a mock of DynamoClient interface.
-type MockDynamoClient struct {
+// MockClient is a mock of Client interface.
+type MockClient struct {
 	ctrl     *gomock.Controller
-	recorder *MockDynamoClientMockRecorder
+	recorder *MockClientMockRecorder
 }
 
-// MockDynamoClientMockRecorder is the mock recorder for MockDynamoClient.
-type MockDynamoClientMockRecorder struct {
-	mock *MockDynamoClient
+// MockClientMockRecorder is the mock recorder for MockClient.
+type MockClientMockRecorder struct {
+	mock *MockClient
 }
 
-// NewMockDynamoClient creates a new mock instance.
-func NewMockDynamoClient(ctrl *gomock.Controller) *MockDynamoClient {
-	mock := &MockDynamoClient{ctrl: ctrl}
-	mock.recorder = &MockDynamoClientMockRecorder{mock}
+// NewMockClient creates a new mock instance.
+func NewMockClient(ctrl *gomock.Controller) *MockClient {
+	mock := &MockClient{ctrl: ctrl}
+	mock.recorder = &MockClientMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockDynamoClient) EXPECT() *MockDynamoClientMockRecorder {
+func (m *MockClient) EXPECT() *MockClientMockRecorder {
 	return m.recorder
 }
 
 // GetAllByPK mocks base method.
-func (m *MockDynamoClient) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynamodb.AttributeValue, error) {
+func (m *MockClient) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynamodb.AttributeValue, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllByPK", pkValue)
 	ret0, _ := ret[0].([]map[string]*dynamodb.AttributeValue)
@@ -44,13 +44,13 @@ func (m *MockDynamoClient) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynam
 }
 
 // GetAllByPK indicates an expected call of GetAllByPK.
-func (mr *MockDynamoClientMockRecorder) GetAllByPK(pkValue interface{}) *gomock.Call {
+func (mr *MockClientMockRecorder) GetAllByPK(pkValue interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllByPK", reflect.TypeOf((*MockDynamoClient)(nil).GetAllByPK), pkValue)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllByPK", reflect.TypeOf((*MockClient)(nil).GetAllByPK), pkValue)
 }
 
 // GetByKey mocks base method.
-func (m *MockDynamoClient) GetByKey(partitionKeyValue PartitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
+func (m *MockClient) GetByKey(partitionKeyValue PartitionKey, sortKeyValue string) (map[string]*dynamodb.AttributeValue, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByKey", partitionKeyValue, sortKeyValue)
 	ret0, _ := ret[0].(map[string]*dynamodb.AttributeValue)
@@ -59,13 +59,13 @@ func (m *MockDynamoClient) GetByKey(partitionKeyValue PartitionKey, sortKeyValue
 }
 
 // GetByKey indicates an expected call of GetByKey.
-func (mr *MockDynamoClientMockRecorder) GetByKey(partitionKeyValue, sortKeyValue interface{}) *gomock.Call {
+func (mr *MockClientMockRecorder) GetByKey(partitionKeyValue, sortKeyValue interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByKey", reflect.TypeOf((*MockDynamoClient)(nil).GetByKey), partitionKeyValue, sortKeyValue)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByKey", reflect.TypeOf((*MockClient)(nil).GetByKey), partitionKeyValue, sortKeyValue)
 }
 
 // Put mocks base method.
-func (m *MockDynamoClient) Put(req PutRequest) error {
+func (m *MockClient) Put(req PutRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Put", req)
 	ret0, _ := ret[0].(error)
@@ -73,7 +73,7 @@ func (m *MockDynamoClient) Put(req PutRequest) error {
 }
 
 // Put indicates an expected call of Put.
-func (mr *MockDynamoClientMockRecorder) Put(req interface{}) *gomock.Call {
+func (mr *MockClientMockRecorder) Put(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Put", reflect.TypeOf((*MockDynamoClient)(nil).Put), req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Put", reflect.TypeOf((*MockClient)(nil).Put), req)
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // an internal DynamoDb client designed to
-// make the interaction with the database easier
+// make the interaction with the database easier.
 type client struct {
 	requestor requestor
 	tableName string
@@ -109,10 +109,11 @@ func (c *client) GetAllByPK(pkValue PartitionKey) ([]map[string]*dynamodb.Attrib
 	}
 	itemsRetrieved := make([]map[string]*dynamodb.AttributeValue, 0)
 	pageNum := 0
-	//exec query
+	// exec query
 	err = c.requestor.QueryPages(params, func(page *dynamodb.QueryOutput, lastPage bool) bool {
 		itemsRetrieved = append(itemsRetrieved, page.Items...)
 		pageNum++
+
 		return true
 	})
 	if err != nil {

@@ -11,25 +11,28 @@ import (
 	"github.com/maximilienandile/producti/internal/secret"
 )
 
+const maxHitsPerPageAlgolia = 1000
+
 type AlgoliaProductIndexer struct {
 	indexClient AlgoliaIndexer
 }
 
 func NewAlgoliaProductIndexer(algoliaConf secret.Algolia) ProductIndexer {
 	return AlgoliaProductIndexer{
-		indexClient: search.NewClient(algoliaConf.AppID, algoliaConf.ApiKey).InitIndex(algoliaConf.IndexName),
+		indexClient: search.NewClient(algoliaConf.AppID, algoliaConf.APIKey).InitIndex(algoliaConf.IndexName),
 	}
 }
 
 func (a AlgoliaProductIndexer) AddProduct(product *product.Indexed) error {
 	_, err := a.indexClient.SaveObject(product)
+
 	return err
 }
 
 func (a AlgoliaProductIndexer) SearchProductByName(name string) ([]*product.Indexed, error) {
 	// TODO : when other fields get indexed limit the search to the attribute name only
 	// we ask for the maximum number of hists to avoid new paginated requests
-	res, err := a.indexClient.Search(name, opt.HitsPerPage(1000))
+	res, err := a.indexClient.Search(name, opt.HitsPerPage(maxHitsPerPageAlgolia))
 	if err != nil {
 		return nil, err
 	}

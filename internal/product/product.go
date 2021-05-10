@@ -21,7 +21,7 @@ type Product struct {
 	RecommendedPrice           price.Price       `json:"recommendedPrice"`
 }
 
-// Indexed is the product representation indexed
+// Indexed is the product representation indexed.
 type Indexed struct {
 	ProductID string `json:"objectID"`
 	Name      string `json:"name"`

@@ -17,7 +17,7 @@ func TestProductStore_Create(t *testing.T) {
 	// setup mock
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	m := NewMockDynamoClient(ctrl)
+	m := NewMockClient(ctrl)
 	testProductStore := ProductStore{client: m}
 	input := product.Product{
 		ID:   "12544",
@@ -38,7 +38,7 @@ func TestProductStore_Create(t *testing.T) {
 func TestProductStore_GetAll(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	m := NewMockDynamoClient(ctrl)
+	m := NewMockClient(ctrl)
 	testProductStore := ProductStore{client: m}
 	dynamoOut := []map[string]*dynamodb.AttributeValue{
 		{
@@ -55,7 +55,7 @@ func TestProductStore_GetAll(t *testing.T) {
 func TestProductStore_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	m := NewMockDynamoClient(ctrl)
+	m := NewMockClient(ctrl)
 	searchID := "42"
 	dynamoOut := map[string]*dynamodb.AttributeValue{
 		"id":   {S: aws.String(searchID)},

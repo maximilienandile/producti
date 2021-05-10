@@ -18,7 +18,7 @@ func init() {
 	validate = validator.New()
 }
 
-func (s *Server) GetProductById(c *gin.Context) {
+func (s *Server) GetProductByID(c *gin.Context) {
 	productID := c.Param("id")
 	if productID == "" {
 		c.Status(http.StatusBadRequest)
@@ -29,11 +29,10 @@ func (s *Server) GetProductById(c *gin.Context) {
 		if errors.Is(err, storage.ErrNotFound) {
 			c.Status(http.StatusNotFound)
 			return
-		} else {
-			// other kind of error
-			_ = c.Error(err)
-			return
 		}
+		// other kind of error
+		_ = c.Error(err)
+		return
 	}
 	c.JSON(http.StatusOK, productFound)
 }
@@ -56,6 +55,7 @@ func (s *Server) SearchProducts(c *gin.Context) {
 	// TODO : those requests to the database can be avoided. Put all the data into the Index ? If so index becomes
 	// the single source of trust, is it a desirable thing ?
 	products := make([]*product.Product, 0, len(results))
+
 	for _, result := range results {
 		// retrieve product in database
 		p, err := s.productStore.GetByID(result.ProductID)
@@ -65,6 +65,7 @@ func (s *Server) SearchProducts(c *gin.Context) {
 		}
 		products = append(products, p)
 	}
+
 	c.JSON(http.StatusOK, products)
 }
 

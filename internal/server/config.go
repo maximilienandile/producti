@@ -6,7 +6,7 @@ import (
 	"github.com/maximilienandile/producti/internal/storage"
 )
 
-// Config will list all parameters needed to launch the server
+// Config will list all parameters needed to launch the server.
 type Config struct {
 	Secrets        secret.Parameters
 	ProductStore   storage.ProductStore
