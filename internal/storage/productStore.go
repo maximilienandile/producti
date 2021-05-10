@@ -16,8 +16,6 @@ type ProductStore interface {
 	Create(*product.Product) (*product.Product, error)
 	// GetByID will retrieve in the persistence layer a product by it's ID
 	GetByID(ID string) (*product.Product, error)
-	// GetByName will search products by name (full-text search)
-	GetByName(name string) ([]*product.Product, error)
 	// GetAll will retrieve all products
 	GetAll() ([]*product.Product, error)
 }
