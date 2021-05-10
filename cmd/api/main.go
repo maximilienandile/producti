@@ -7,6 +7,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/maximilienandile/producti/internal/indexing"
+
 	"github.com/maximilienandile/producti/internal/dynamo"
 
 	"github.com/maximilienandile/producti/internal/secret"
@@ -68,9 +70,10 @@ func init() {
 		LogLevel: &logLevel,
 	}))
 	config := server.Config{
-		ProductStore: dynamo.NewProductStore(tableName, awsSession),
-		Secrets:      secrets,
-		Stage:        stage,
+		ProductStore:   dynamo.NewProductStore(tableName, awsSession),
+		ProductIndexer: indexing.NewAlgoliaProductIndexer(secrets.Algolia),
+		Secrets:        secrets,
+		Stage:          stage,
 	}
 	s := server.New(&config)
 	ginLambda = ginadapter.New(s.GinEngine)
