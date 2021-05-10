@@ -24,12 +24,13 @@ $ go build -o indexer cmd/indexer/main.go
 * Create an IAM user
 * Save your AWS credentials into a named profile. [Instructions Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
 * Install Node.js and NPM: [see here](https://nodejs.org/en/download/)
-* Install Serverless globally `npm install -g serverless`
-* Install Go [see here](https://golang.org/dl/)
-* Install make (should be already installed on MacOS and some Linux distros, installation necessary for Windows)
-* Install golangci-ling [see here](https://golangci-lint.run/usage/install/)
+* Install `serverless` globally `npm install -g serverless` (used for the deployment)
+* Install `go` [see here](https://golang.org/dl/)
+* Install `make` (should be already installed on MacOS and some Linux distros, installation necessary for Windows)
+* Install `golangci-lint` [see here](https://golangci-lint.run/usage/install/) (used for the linter)
+* Install `newman` [see here](https://www.npmjs.com/package/newman#getting-started) with npm : `npm install -g newman` (used for the functional tests)
 
-
+``
 ### Manual Env Setup in AWS
 
 * Create two KMS keys (Customer Managed Keys)
@@ -104,9 +105,60 @@ $ make unit_tests
 
 To launch functional tests first deploy to a web server the API then execute this command :
 
+Example for the develop env (on my AWS account)
 ```
-$ make functional_tests base-url=http://localhost:8080
+$ make functional_tests base-url=https://benr4nyn7k.execute-api.eu-central-1.amazonaws.com/develop
 ```
+
+Example Output :
+
+````
+newman
+
+Producti Test
+
+→ Create Product
+  POST https://benr4nyn7k.execute-api.eu-central-1.amazonaws.com/develop/product [201 Created, 1.16KB, 193ms]
+  ✓  Status test
+  ✓  response must be valid and have a body JSON
+
+→ Get Product By ID
+  GET https://benr4nyn7k.execute-api.eu-central-1.amazonaws.com/develop/product/8bf888af-079e-43dd-92a0-5e0c6d861d6a [200 OK, 1.16KB, 66ms]
+  ✓  Status test
+  ✓  response must be valid and have a body JSON
+
+→ Get All Products
+  GET https://benr4nyn7k.execute-api.eu-central-1.amazonaws.com/develop/products [200 OK, 1.82KB, 60ms]
+  ✓  Status test
+  ✓  response must be valid and have a body JSON
+  ✓  response is an array
+
+→ Search Product
+  GET https://benr4nyn7k.execute-api.eu-central-1.amazonaws.com/develop/product?search=Delacroix [200 OK, 1.14KB, 91ms]
+  ✓  Status test
+  ✓  response must be valid and have a body JSON
+  ✓  response is an array
+
+┌─────────────────────────┬────────────────────┬───────────────────┐
+│                         │           executed │            failed │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              iterations │                  1 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│                requests │                  4 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│            test-scripts │                  4 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│      prerequest-scripts │                  0 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              assertions │                 10 │                 0 │
+├─────────────────────────┴────────────────────┴───────────────────┤
+│ total run duration: 538ms                                        │
+├──────────────────────────────────────────────────────────────────┤
+│ total data received: 2.8KB (approx)                              │
+├──────────────────────────────────────────────────────────────────┤
+│ average response time: 102ms [min: 60ms, max: 193ms, s.d.: 53ms] │
+
+````
 
 ### Linter
 
@@ -143,15 +195,18 @@ Please make sure to update tests as appropriate.
 ## Tasks
 
 - [x] GET /products
+- [x] Sort by Name result of GET /products
 - [x] GET /product/{id} 
-- [ ] GET /product?search=[NAME] 
-- [ ] API documentation
+- [x] GET /product?search=[NAME] 
+- [x] API documentation
 - [x] Linter
 - [x] Deployment
 
 Extra
 
 - [x] POST /product
+- [x] Postman Collection for functional tests
+- [x] Add Unit tests
 - [ ] CI setup Github
 
 
