@@ -230,7 +230,7 @@ Extra
 - [x] POST /product
 - [x] Postman Collection for functional tests
 - [x] Add Unit tests
-- [ ] CI setup Github
+- [x] CI setup Github
 
 
 ## License
